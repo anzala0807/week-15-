@@ -29,11 +29,12 @@ bot.onText(/\/menu/, (msg) => {
 });
 
 // routers
-r.get('/prediction/:i/:r', function(req, res, next) {    
+r.get('/prediction/:x/:y/:z', function(req, res, next) {    
     model.predict(
         [
-            parseFloat(req.params.i), // string to float
-            parseFloat(req.params.r)
+            parseFloat(req.params.x), // string to float
+            parseFloat(req.params.y),
+            parseFloat(req.params.z)
         ]
     ).then((jres)=>{
         res.json(jres);
