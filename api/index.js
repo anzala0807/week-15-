@@ -46,21 +46,20 @@ bot.on('message', (msg) => {
         ).then((jres)=>{
             bot.sendMessage(
                 msg.chat.id,
-                `nilai x yang diprediksi adalah ${jres[0]} volt`
+                `nilai x yang diprediksi adalah ${jres[0]} `
             );   
             bot.sendMessage(
                 msg.chat.id,
-                `nilai y yang diprediksi adalah ${jres[1]} watt`
+                `nilai y yang diprediksi adalah ${jres[1]} `
             );   
             bot.sendMessage(
                 msg.chat.id,
-                `nilai z yang diprediksi adalah ${jres[2]} watt
+                `nilai z yang diprediksi adalah ${jres[2]} `
          );   
 })
     }else{
         state = 0
     }
-})
 
 
 
