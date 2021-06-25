@@ -6,7 +6,7 @@ const model = require('./sdk/model.js');
 
 // Bot Setting
 const TelegramBot = require('node-telegram-bot-api');
-const token = '1733547356:AAEOX7oG_z09vS34M-DUHOm5YCPsXYDXohg'
+const token = '1875119020:AAHGtM9gl6gdSqN7UOQwSFq207_CLw0Ic3o'
 const bot = new TelegramBot(token, {polling: true});
 
 
@@ -16,24 +16,60 @@ bot.onText(/\/start/, (msg) => {
     bot.sendMessage(
         msg.chat.id,
         `hello ${msg.chat.first_name}, welcome...\n
-        click /menu to main menu`
+        click  /predict to know about x y and z`
     );   
 });
 
-bot.onText(/\/menu/, (msg) => { 
-    console.log(msg)
+
+
+state = 0;
+bot.onText(/\/predict/, (msg) => { 
     bot.sendMessage(
         msg.chat.id,
-        `this is your main menu`
+        `input nilai x|y|z example 4|3|2`
     );   
+    state = 1;
 });
 
+bot.on('message', (msg) => {
+    if(state == 1){
+        s = msg.text.split("|");
+        x = s[0]
+        y = s[1]
+        z = s[2]
+        model.predict(
+            [
+                parseFloat(s[0]), // string to float
+                parseFloat(s[1]),
+                parseFloat(s[2])
+            ]
+        ).then((jres)=>{
+            bot.sendMessage(
+                msg.chat.id,
+                `nilai x yang diprediksi adalah ${jres[0]} `
+            );   
+            bot.sendMessage(
+                msg.chat.id,
+                `nilai y yang diprediksi adalah ${jres[1]} `
+            );   
+            bot.sendMessage(
+                msg.chat.id,
+                `nilai z yang diprediksi adalah ${jres[2]} `
+         );   
+})
+    }else{
+        state = 0
+    }
+})
+
+
 // routers
-r.get('/prediction/:i/:r', function(req, res, next) {    
+r.get('/prediction/:x/:y/:z', function(req, res, next) {    
     model.predict(
         [
-            parseFloat(req.params.i), // string to float
-            parseFloat(req.params.r)
+            parseFloat(req.params.x), // string to float
+            parseFloat(req.params.y),
+            parseFloat(req.params.z)
         ]
     ).then((jres)=>{
         res.json(jres);
